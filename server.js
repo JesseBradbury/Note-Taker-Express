@@ -2,6 +2,8 @@ const express = require("express");
 const path = require("path");
 const fs = require("fs");
 
+const uuid = require("./helpers/uuid")
+
 const db = require("./db/db.json")
 
 const app = express();
@@ -28,6 +30,7 @@ app.post("/api/notes", (req, res) => {
     // Checks if all data is present at submit. 
     if (title && text) {
 
+        // This gets the data in the db JSON file
         fs.readFile("./db/db.json", "utf8", (err, data) => {
             if (err) {
                 console.error(err);
@@ -40,13 +43,16 @@ app.post("/api/notes", (req, res) => {
             const newNote = {
                 title,
                 text,
-                // note_id: uuid(),
+                id: uuid(),
             };
 
+            // This adds the new data to the existing data in the db file. 
             existingData.push(newNote);
 
             const updatedDataString = JSON.stringify(existingData);
 
+
+            // This creates a new db file with the contents of the
             fs.writeFile("./db/db.json",
                 updatedDataString, (err) =>
                 err
@@ -68,8 +74,6 @@ app.post("/api/notes", (req, res) => {
     } else {
         res.status(500).json('Error in posting note');
     }
-
-
 
 });
 
