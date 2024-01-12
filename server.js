@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const fs = require("fs");
 
+// This is the function for assigning a uuid
 const uuid = require("./helpers/uuid")
 
 const db = require("./db/db.json")
@@ -9,21 +10,25 @@ const db = require("./db/db.json")
 
 
 const app = express();
-
+// This line is speciffic for hosting on a server like Heroku
 const PORT = process.env.PORT || 3001;
 
+// Middleware for using the data from the db files. 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Uses the public file for the index and notes html and assets. 
 app.use(express.static('public'));
 
-
+// Get routes for the /notes page and the API containing the data. 
 app.get("/notes", (req, res) => res.sendFile(path.join(__dirname, "/public/notes.html")))
 
 app.get("/api/notes", (req, res) => {
     res.status(200).json(db);
 })
 
+
+// Post route for saving a new note
 app.post("/api/notes", (req, res) => {
     console.info(`${req.method} request received to add a note`);
 
@@ -41,21 +46,23 @@ app.post("/api/notes", (req, res) => {
                 return;
             }
 
+            // Current data in the db file
             const existingData = JSON.parse(data);
 
+            // Creates a new Note
             const newNote = {
                 title,
                 text,
                 id: uuid(),
             };
 
-            // This adds the new data to the existing data in the db file. 
+            // This adds the new note data to the existing data in the db file. 
             existingData.push(newNote);
 
             const updatedDataString = JSON.stringify(existingData);
 
 
-            // This creates a new db file with the contents of the
+            // This creates a new db file with the updated data
             fs.writeFile("./db/db.json",
                 updatedDataString, (err) =>
                 err
@@ -64,7 +71,6 @@ app.post("/api/notes", (req, res) => {
                         `Note has been written to JSON file`
                     )
             );
-
 
             const response = {
                 status: "success",
@@ -80,6 +86,7 @@ app.post("/api/notes", (req, res) => {
 
 });
 
+// Catch all for any other url locations. 
 app.get("*", (req, res) => res.sendFile(path.join(__dirname, "/public/index.html")))
 
 app.listen(PORT, () =>
