@@ -64,21 +64,22 @@ app.post("/api/notes", (req, res) => {
 
             // This creates a new db file with the updated data
             fs.writeFile("./db/db.json",
-                updatedDataString, (err) =>
-                err
-                    ? console.error(err)
-                    : console.log(
-                        `Note has been written to JSON file`
-                    )
-            );
+                updatedDataString, (writeErr) => {
+                    if (writeErr) {
+                        console.error(writeErr);
+                        res.status(500), json('Error in posting note');
+                        return;
+                    }
 
-            const response = {
-                status: "success",
-                body: newNote,
-            };
+                    const response = {
+                        status: "success",
+                        body: newNote,
+                    };
 
-            console.log(response);
-            res.status(201).json(response);
+                    console.log(response);
+                    res.status(201).json(response);
+                });
+
         });
     } else {
         res.status(500).json('Error in posting note');

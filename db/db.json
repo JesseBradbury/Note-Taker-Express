@@ -1,12 +1,1 @@
-[
-    {
-        "title": "Test Note",
-        "text": "This is the test note!",
-        "id": "1008"
-    },
-    {
-        "title": "Daily Note",
-        "text": "Jan 11th was a pretty good day :)",
-        "id": "1029"
-    }
-]
+[{"title":"Test Note","text":"This is the test note!","id":"1008"},{"title":"Daily Note","text":"Jan 11th was a pretty good day :)","id":"1029"},{"title":"Local Server Test","text":"Just testing to see if my app works locally\n","id":"376f"},{"title":"Test 4","text":"This is the 4th test\n","id":"8dbf"},{"title":"Fj;aiosjdf;oiaj","text":"asdfl;j;aodjf;aoi","id":"02cc"},{"title":"AAAAAA","text":"asdffa","id":"4c4b"},{"title":"Test","text":"Ts","id":"7448"},{"title":"BBBBBB","text":"Bbbbbbbb","id":"69b2"}]
