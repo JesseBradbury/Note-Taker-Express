@@ -5,7 +5,8 @@ const fs = require("fs");
 // This is the function for assigning a uuid
 const uuid = require("./helpers/uuid")
 
-const db = require("./db/db.json")
+// So i need to remove this
+// const db = require("./db/db.json")
 
 
 
@@ -24,7 +25,15 @@ app.use(express.static('public'));
 app.get("/notes", (req, res) => res.sendFile(path.join(__dirname, "/public/notes.html")))
 
 app.get("/api/notes", (req, res) => {
-    res.status(200).json(db);
+    
+    fs.readFile("./db/db.json", "utf8", (err, data) => {
+        if (err) {
+            console.error(err);
+            res.status(500).json('Error in posting note');
+            return;
+        }
+        res.status(200).json(JSON.parse(data));
+    })
 })
 
 
